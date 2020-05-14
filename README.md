@@ -2,7 +2,7 @@
 
 层级清晰、不依赖 JavaScript 的 Switch、Checkbox、Radio 三个 Input UI。
 
-![](https://user-images.githubusercontent.com/58411528/81951091-531d0580-9637-11ea-9dec-70a9c6685b6d.gif)
+![](https://user-images.githubusercontent.com/58411528/81953914-cf651800-963a-11ea-9a8d-63712a24dab2.gif)
 
 ## switch
 
