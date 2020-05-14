@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Switch & Checkbox & Radio</title>
+    <link rel="icon" type="image/png" href="https://xinlu.ink/favicon.png" />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="https://xinlu.ink/favicon.ico"
+    />
+    <script src="https://cdn.bootcss.com/vue/2.6.11/vue.js"></script>
+    <link rel="stylesheet" href="../dist/main.css" />
+    <style>
+      [data-desc] {
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+      }
+
+      h1,
+      [data-desc],
+      article {
+        margin: 10px;
+        padding: 10px;
+      }
+
+      h1 {
+        padding-left: 0;
+        font-size: 1.125em;
+      }
+
+      .split {
+        color: #ccc;
+        padding-right: 10px;
+        padding-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Switch & Checkbox & Radio</h1>
+
+    <!-- structure -->
+    <div data-source="emmet" style="display: none;">
+      label.hs-switch__wrapper[for="hsSwitch"]>(div.hs-switch.animate>input:checkbox.hs-switch__input#hsSwitch[name="hsSwitch"]+i.hs-switch__toggle+span.hs-switch__animating)+span{Switch}
+      label.hs-checkbox__wrapper[for="hsCheckbox"]>(div.hs-checkbox.animate>input:checkbox.hs-checkbox__input#hsCheckbox[name="hsCheckbox"]+i.hs-checkbox__toggle)+span{Checkbox}
+      label.hs-radio__wrapper[for="hsRadio$"]*2>(div.hs-radio.animate>input:radio.hs-radio__input#hsRadio$[name="hsRadio"]+i.hs-radio__toggle)+span{Radio$}
+    </div>
+
+    <!-- 无 JavaScript 环境示例 -->
+    <div data-desc="basic example">
+      <!-- switch -->
+      <label class="hs-switch__wrapper">
+        <div class="hs-switch animate">
+          <input class="hs-switch__input" type="checkbox" />
+          <i class="hs-switch__toggle"></i>
+          <span class="hs-switch__animating"></span>
+        </div>
+      </label>
+
+      <label class="hs-switch__wrapper">
+        <div class="hs-switch animate">
+          <input class="hs-switch__input" type="checkbox" disabled />
+          <i class="hs-switch__toggle"></i>
+          <span class="hs-switch__animating"></span>
+        </div>
+      </label>
+
+      <label class="hs-switch__wrapper">
+        <div class="hs-switch animate">
+          <input class="hs-switch__input" type="checkbox" checked disabled />
+          <i class="hs-switch__toggle"></i>
+          <span class="hs-switch__animating"></span>
+        </div>
+      </label>
+
+      <span class="split">-</span>
+
+      <!-- checkbox -->
+      <label class="hs-checkbox__wrapper">
+        <div class="hs-checkbox animate">
+          <input class="hs-checkbox__input" type="checkbox" />
+          <i class="hs-checkbox__toggle"></i>
+        </div>
+      </label>
+
+      <label class="hs-checkbox__wrapper">
+        <div class="hs-checkbox animate">
+          <input class="hs-checkbox__input" type="checkbox" disabled />
+          <i class="hs-checkbox__toggle"></i>
+        </div>
+      </label>
+
+      <label class="hs-checkbox__wrapper">
+        <div class="hs-checkbox animate">
+          <input class="hs-checkbox__input" type="checkbox" checked disabled />
+          <i class="hs-checkbox__toggle"></i>
+        </div>
+      </label>
+
+      <span class="split">-</span>
+
+      <!-- checkbox some -->
+      <label class="hs-checkbox__wrapper">
+        <div class="hs-checkbox hs-checkbox_some animate">
+          <input class="hs-checkbox__input" type="checkbox" />
+          <i class="hs-checkbox__toggle"></i>
+        </div>
+      </label>
+
+      <label class="hs-checkbox__wrapper">
+        <div class="hs-checkbox hs-checkbox_some animate">
+          <input class="hs-checkbox__input" type="checkbox" checked disabled />
+          <i class="hs-checkbox__toggle"></i>
+        </div>
+      </label>
+
+      <span class="split">-</span>
+
+      <!-- radio -->
+      <label class="hs-radio__wrapper">
+        <div class="hs-radio animate">
+          <input class="hs-radio__input" type="radio" name="defaultRadio" />
+          <i class="hs-radio__toggle"></i>
+        </div>
+      </label>
+
+      <label class="hs-radio__wrapper">
+        <div class="hs-radio animate">
+          <input class="hs-radio__input" type="radio" name="defaultRadio" />
+          <i class="hs-radio__toggle"></i>
+        </div>
+      </label>
+
+      <label class="hs-radio__wrapper">
+        <div class="hs-radio animate">
+          <input
+            class="hs-radio__input"
+            type="radio"
+            name="disabledRadio"
+            disabled
+          />
+          <i class="hs-radio__toggle"></i>
+        </div>
+      </label>
+
+      <label class="hs-radio__wrapper">
+        <div class="hs-radio animate">
+          <input
+            class="hs-radio__input"
+            type="radio"
+            name="checkedDisabledRadio"
+            checked
+            disabled
+          />
+          <i class="hs-radio__toggle"></i>
+        </div>
+      </label>
+    </div>
+
+    <!-- 带 JavaScript 环境示例 -->
+    <div id="app">
+      <section v-for="item in data">
+        <!-- #region SWITCH -->
+        <div
+          v-if="item.type === type.switch"
+          v-bind:class="{
+            'hs-switch_on': item.checked,
+            'hs-switch_disabled': !item.enable
+          }"
+        >
+          <label class="hs-switch__wrapper">
+            <div class="hs-switch animate">
+              <input
+                class="hs-switch__input"
+                type="checkbox"
+                v-model="item.checked"
+                v-bind:disabled="!item.enable"
+              />
+              <i class="hs-switch__toggle"></i>
+              <span class="hs-switch__animating"></span>
+            </div>
+            <span>{{item.alias}}</span>
+          </label>
+          <span>{{item.checked}}</span>
+        </div>
+        <!-- #endregion SWITCH -->
+
+        <!-- #region CHECKBOX -->
+        <div
+          v-if="item.type === type.checkbox"
+          v-bind:class="{
+            'hs-checkbox_on': item.checked,
+            'hs-checkbox_disabled': !item.enable
+          }"
+        >
+          <label class="hs-checkbox__wrapper">
+            <div class="hs-checkbox animate">
+              <input
+                class="hs-checkbox__input"
+                type="checkbox"
+                v-model="item.checked"
+                v-bind:disabled="!item.enable"
+                v-on:change="handleChange($event, item)"
+              />
+              <i class="hs-checkbox__toggle"></i>
+            </div>
+            <span>{{item.alias}}</span>
+            <span>{{item.checked}}</span>
+          </label>
+        </div>
+        <!-- #endregion CHECKBOX -->
+
+        <!-- #region RADIO -->
+        <div v-if="item.type === 'radio'">
+          <!-- 默认情况 -->
+          <div v-if="item.state === state.default.value">
+            <div
+              class="hs-radio_inline"
+              v-bind:class="{
+              'hs-radio_disabled': !item.enable
+              }"
+            >
+              <label class="hs-radio__wrapper">
+                <div class="hs-radio animate">
+                  <input
+                    class="hs-radio__input"
+                    type="radio"
+                    name="radioDemo1"
+                    value="yes"
+                    v-model="item.value"
+                  />
+                  <i class="hs-radio__toggle"></i>
+                </div>
+                <span>yes</span>
+              </label>
+            </div>
+            <div
+              class="hs-radio_inline"
+              v-bind:class="{
+              'hs-radio_disabled': !item.enable
+              }"
+            >
+              <label class="hs-radio__wrapper">
+                <div class="hs-radio animate">
+                  <input
+                    class="hs-radio__input"
+                    type="radio"
+                    name="radioDemo1"
+                    value="no"
+                    v-model="item.value"
+                  />
+                  <i class="hs-radio__toggle"></i>
+                </div>
+                <span>no</span>
+              </label>
+            </div>
+            <span class="split">-</span>
+            <span>{{item.value}}</span>
+          </div>
+
+          <!-- 不选情况下禁用 -->
+          <div v-if="item.state === state.disableUnChecked.value">
+            <label class="hs-radio__wrapper">
+              <div class="hs-radio animate">
+                <input
+                  class="hs-radio__input"
+                  type="radio"
+                  v-bind:value="'yes'"
+                  v-model="item.value"
+                  v-bind:disabled="!item.enable"
+                />
+                <i class="hs-radio__toggle"></i>
+              </div>
+              <span>{{item.alias}}</span>
+            </label>
+          </div>
+
+          <!-- 选择情况下禁用 -->
+          <div v-if="item.state === state.disableChecked.value">
+            <label class="hs-radio__wrapper">
+              <div class="hs-radio animate">
+                <input
+                  class="hs-radio__input"
+                  type="radio"
+                  v-bind:value="'yes'"
+                  v-model="item.value"
+                  v-bind:disabled="!item.enable"
+                />
+                <i class="hs-radio__toggle"></i>
+              </div>
+              <span>{{item.alias}}</span>
+            </label>
+          </div>
+        </div>
+        <!-- #endregion RADIO -->
+      </section>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>

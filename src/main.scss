@@ -1,0 +1,559 @@
+/*! Switch & Checkbox & Radio v0.0.1 | MIT License | github.com/xianghongai/switch-checkbox-radio.css */
+
+$namespace: 'hs';
+
+$color-primary: #4203ec;
+
+$color-white: #fff;
+$color-black: #000;
+$color-gray-0: $color-white;
+$color-gray-100: #f5f6f7;
+$color-gray-200: #ebedf0;
+$color-gray-300: #dadde1;
+$color-gray-400: #ccd0d5;
+$color-gray-500: #bec3c9;
+$color-gray-600: #8d949e;
+$color-gray-700: #606770;
+$color-gray-800: #444950;
+$color-gray-900: #1c1e21;
+$color-gray-1000: $color-black;
+
+/**
+  * 可在 hs-switch, hs-checkbox, hs-radio 层设置字体大小 (font-size) 以调整控件尺寸
+  */
+
+/* #region SWITCH */
+// 常规、未激活
+$switch-inactive-color: $color-gray-400;
+$switch-inactive-border-color: $color-gray-300;
+// 常规、激活
+$switch-active-color: $color-primary;
+$switch-active-border-color: $color-primary;
+
+// '左右切换按钮' 大小
+$switch-size: 16px;
+// 开关的内部间距，有多大的间距将会形成多大的边框
+$switch-border-width: 1px;
+
+.#{$namespace}-switch__wrapper {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+// :checked is pseudo-class
+// [disabled] is attribute
+.#{$namespace}-switch {
+  display: inline-block;
+  position: relative;
+  top: -0.09em;
+  font-size: $switch-size;
+  vertical-align: middle;
+  user-select: none;
+  & > .#{$namespace}-switch__input {
+    // 隐藏掉系统 switch
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    margin: 0;
+    opacity: 0;
+    // 激活时
+    &:checked {
+      & + .#{$namespace}-switch__toggle {
+        // 边框颜色
+        // NOTE: 此时的边框会生效
+        border-color: $switch-active-border-color;
+        // 内部色块隐藏
+        &::before {
+          top: 50%;
+          bottom: 50%;
+          left: 60%;
+          right: 50%;
+          border-width: 0;
+          border-radius: 0;
+        }
+        // 按钮右移
+        &::after {
+          transform: translateX(1em);
+          box-shadow: -1px 1px 3px rgba(0, 0, 0, 0.25);
+        }
+      }
+    }
+    // 禁用时，调整透明度 (注意背景色的影响，不嫌麻烦或夜晚模式，可以更改为具体的颜色值)
+    &[disabled] {
+      & + .#{$namespace}-switch__toggle {
+        // 边框颜色
+        border-color: $switch-inactive-border-color;
+        opacity: 0.4;
+        cursor: not-allowed;
+        &::before {
+          // 内部色块
+          background-color: $switch-inactive-color;
+        }
+        &::after {
+          box-shadow: none;
+        }
+      }
+    }
+    // 激活+禁用时
+    &[disabled]:checked {
+      & + .#{$namespace}-switch__toggle {
+        // 边框颜色
+        border-color: $switch-inactive-border-color;
+        // 内部色块
+        background-color: $switch-active-color;
+      }
+    }
+  }
+  & + span {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+}
+
+.#{$namespace}-switch__toggle {
+  display: block;
+  position: relative;
+  z-index: 2;
+  width: 2em;
+  height: 1em;
+  margin: 0;
+  padding: 0;
+  // 此背景色就是激活时的色彩
+  background-color: $switch-active-color;
+  // 未激活时的边框色
+  // NOTE: 这里的边框设定，会造成圆角部分呈锯齿状，这里的代码只是占位，在激活时才会生效
+  // 未激活时的边框，在 ::before 中设定并生效
+  border: $switch-border-width solid $switch-inactive-border-color;
+  border-radius: 1em;
+  transition: all 0.3s;
+  box-sizing: content-box;
+  cursor: pointer;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: '';
+  }
+
+  // 未激活时'内部色块'和'边框颜色'的默认样式
+  &::before {
+    top: -$switch-border-width;
+    right: -$switch-border-width;
+    bottom: -$switch-border-width;
+    left: -$switch-border-width;
+    border: $switch-border-width solid $switch-inactive-border-color;
+    background-color: $switch-inactive-color;
+    border-radius: 1em;
+    transition: all 0.3s ease-out;
+  }
+
+  // 未激活时'左右切换按钮'的默认样式
+  &::after {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1em;
+    height: 1em;
+    background-color: #fff;
+    border-radius: 100%;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s;
+  }
+}
+
+.#{$namespace}-switch__wrapper:hover .#{$namespace}-switch__toggle,
+.#{$namespace}-switch:hover .#{$namespace}-switch__toggle,
+.#{$namespace}-switch__input:focus + .#{$namespace}-switch__toggle {
+  &::after {
+    box-shadow: 1px 1px 4px rgba($switch-active-color, 0.35), -1px -1px 4px rgba($switch-active-color, 0.35);
+  }
+}
+
+.#{$namespace}-switch_inline {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+.#{$namespace}-switch__animating {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  border-radius: 1em;
+  box-shadow: 0 0 0 0 $switch-active-color;
+  opacity: 0.2;
+  content: '';
+  pointer-events: none;
+}
+
+.#{$namespace}-switch.animate > .#{$namespace}-switch__input:not([disabled]) {
+  & ~ .#{$namespace}-switch__animating {
+    box-shadow: 0 0 0 0 $switch-active-color;
+    animation: SwitchFadeEffect 2s cubic-bezier(0.08, 0.82, 0.17, 1),
+      SwitchWaveEffect 0.4s cubic-bezier(0.08, 0.82, 0.17, 1);
+    animation-fill-mode: forwards;
+  }
+  &:checked ~ .#{$namespace}-switch__animating {
+    box-shadow: 0 0 0 0 $switch-active-color;
+    animation: SwitchOnFadeEffect 2s cubic-bezier(0.08, 0.82, 0.17, 1),
+      SwitchOnWaveEffect 0.4s cubic-bezier(0.08, 0.82, 0.17, 1);
+    animation-fill-mode: forwards;
+  }
+}
+
+@keyframes SwitchWaveEffect {
+  100% {
+    box-shadow: 0 0 0 6px $switch-active-color;
+  }
+}
+
+@keyframes SwitchFadeEffect {
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes SwitchOnWaveEffect {
+  100% {
+    box-shadow: 0 0 0 6px $switch-active-color;
+  }
+}
+
+@keyframes SwitchOnFadeEffect {
+  100% {
+    opacity: 0;
+  }
+}
+
+/* #endregion SWITCH */
+
+/* #region CHECKBOX */
+// 常规、未激活
+$checkbox-inactive-color: transparent;
+$checkbox-inactive-border-color: $color-gray-800;
+// 常规、激活
+$checkbox-active-color: $color-primary;
+// 禁用
+$checkbox-disabled-color: $color-gray-400;
+
+$checkbox-size: 16px;
+$checkbox-border-width: 1px;
+$checkbox-border-radius: 2px;
+
+.#{$namespace}-checkbox__wrapper {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+.#{$namespace}-checkbox {
+  display: inline-block;
+  position: relative;
+  top: -0.09em;
+  margin: 0;
+  padding: 0;
+  font-size: $checkbox-size;
+  vertical-align: middle;
+  user-select: none;
+  & > .#{$namespace}-checkbox__input {
+    // 隐藏掉系统 checkbox
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    margin: 0;
+    opacity: 0;
+    // 激活时
+    &:checked {
+      & + .#{$namespace}-checkbox__toggle {
+        // 边框颜色
+        border-color: $checkbox-active-color;
+        // 内部色块
+        &::before {
+          background-color: $checkbox-active-color;
+          transform: translate(-50%, -50%) scale(0.6);
+        }
+      }
+    }
+    // 禁用时
+    &[disabled] {
+      & + .#{$namespace}-checkbox__toggle {
+        // 边框颜色
+        border-color: $checkbox-disabled-color;
+        cursor: not-allowed;
+        &::before {
+          // 内部色块
+          background-color: $checkbox-inactive-color;
+        }
+      }
+    }
+    // 激活+禁用时
+    &[disabled]:checked {
+      & + .#{$namespace}-checkbox__toggle {
+        // 边框颜色
+        border-color: $checkbox-disabled-color;
+        &::before {
+          // 内部色块
+          background-color: $checkbox-disabled-color;
+        }
+      }
+    }
+  }
+  & + span {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+}
+
+// 自定义 checkbox 默认样式
+.#{$namespace}-checkbox__toggle {
+  display: block;
+  position: relative;
+  z-index: 2;
+  width: 1em;
+  height: 1em;
+  margin: 0;
+  padding: 0;
+  border: $checkbox-border-width solid $checkbox-inactive-border-color;
+  line-height: 1;
+  background-color: $checkbox-inactive-color;
+  border-radius: $checkbox-border-radius;
+  box-sizing: border-box;
+  transition: all 0.3s;
+  cursor: pointer;
+
+  &::before,
+  &::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1em;
+    height: 1em;
+    border-radius: $checkbox-border-radius;
+    transform-origin: center center;
+    content: '';
+  }
+
+  // 自定义 checkbox 内部色块默认样式
+  &::before {
+    transform: translate(-50%, -50%) scale(0);
+    transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+  }
+
+  &::after {
+    border: 1px solid $checkbox-active-color;
+    transform: translate(-50%, -50%) scale(0);
+    visibility: hidden;
+  }
+}
+
+.#{$namespace}-checkbox__wrapper:hover .#{$namespace}-checkbox__toggle,
+.#{$namespace}-checkbox:hover .#{$namespace}-checkbox__toggle,
+.#{$namespace}-checkbox__input:focus + .#{$namespace}-checkbox__toggle {
+  border-color: $checkbox-active-color;
+}
+
+// 需要附加 .animate 组合生效动画效果，动画效果可选择
+.#{$namespace}-checkbox.animate > .#{$namespace}-checkbox__input:not([disabled]) {
+  &:checked {
+    & + .#{$namespace}-checkbox__toggle::after {
+      animation: CheckboxFadeEffect 0.8s cubic-bezier(0.08, 0.82, 0.17, 1),
+        CheckboxWaveEffect 0.2s cubic-bezier(0.08, 0.82, 0.17, 1);
+      animation-fill-mode: forwards;
+      visibility: visible;
+    }
+  }
+}
+
+.#{$namespace}-checkbox_inline {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+@keyframes CheckboxWaveEffect {
+  100% {
+    transform: translate(-50%, -50%) scale(1.3);
+  }
+}
+
+@keyframes CheckboxFadeEffect {
+  100% {
+    opacity: 0;
+  }
+}
+
+.#{$namespace}-checkbox_some {
+  & > .#{$namespace}-checkbox__input {
+    &:checked {
+      & + .#{$namespace}-checkbox__toggle::before {
+        height: 0.3em;
+      }
+    }
+  }
+}
+/* #endregion CHECKBOX */
+
+/* #region RADIO */
+// 常规、未激活
+$radio-inactive-color: transparent;
+$radio-inactive-border-color: $color-gray-800;
+// 常规、激活
+$radio-active-color: $color-primary;
+// 禁用
+$radio-disabled-color: $color-gray-400;
+
+$radio-size: 16px;
+$radio-padding: 2px;
+$radio-border-width: 1px;
+$radio-border-radius: 50%;
+
+.#{$namespace}-radio__wrapper {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+.#{$namespace}-radio {
+  display: inline-block;
+  position: relative;
+  top: -0.09em;
+  margin: 0;
+  padding: 0;
+  font-size: $checkbox-size;
+  vertical-align: middle;
+  user-select: none;
+  & > .#{$namespace}-radio__input {
+    // 隐藏掉系统 radio
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    margin: 0;
+    opacity: 0;
+    // 激活时
+    &:checked {
+      & + .#{$namespace}-radio__toggle {
+        // 边框颜色
+        border-color: $radio-active-color;
+        // 内部色块
+        &::before {
+          background-color: $radio-active-color;
+          transform: translate(-50%, -50%) scale(0.6);
+        }
+      }
+    }
+    // 禁用时
+    &[disabled] {
+      & + .#{$namespace}-radio__toggle {
+        // 边框颜色
+        border-color: $radio-disabled-color;
+        cursor: not-allowed;
+        &::before {
+          // 内部色块
+          background-color: $radio-inactive-color;
+        }
+      }
+    }
+    // 激活+禁用时
+    &[disabled]:checked {
+      & + .#{$namespace}-radio__toggle {
+        // 边框颜色
+        border-color: $radio-disabled-color;
+        &::before {
+          // 内部色块
+          background-color: $radio-disabled-color;
+        }
+      }
+    }
+  }
+  & + span {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+}
+
+// 自定义 radio 默认样式
+.#{$namespace}-radio__toggle {
+  display: block;
+  position: relative;
+  z-index: 2;
+  width: 1em;
+  height: 1em;
+  margin: 0;
+  padding: 0;
+  border: $radio-border-width solid $radio-inactive-border-color;
+  line-height: 1;
+  background-color: $radio-inactive-color;
+  border-radius: $radio-border-radius;
+  box-sizing: border-box;
+  transition: all 0.3s;
+  cursor: pointer;
+
+  &::before,
+  &::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1em;
+    height: 1em;
+    border-radius: $radio-border-radius;
+    transform-origin: center center;
+    content: '';
+  }
+
+  // 自定义 radio 内部色块默认样式
+  &::before {
+    transform: translate(-50%, -50%) scale(0);
+    transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+  }
+
+  // 动画层
+  &::after {
+    border: 1px solid $radio-active-color;
+    transform: translate(-50%, -50%) scale(0);
+    visibility: hidden;
+  }
+}
+
+.#{$namespace}-radio__wrapper:hover .#{$namespace}-radio__toggle,
+.#{$namespace}-radio:hover .#{$namespace}-radio__toggle,
+.#{$namespace}-radio__input:focus + .#{$namespace}-radio__toggle {
+  border-color: $radio-active-color;
+}
+
+// 需要附加 .animate 组合生效动画效果，动画效果可选择
+.#{$namespace}-radio.animate > .#{$namespace}-radio__input:not([disabled]) {
+  &:checked {
+    & + .#{$namespace}-radio__toggle::after {
+      animation: RadioFadeEffect 0.8s cubic-bezier(0.08, 0.82, 0.17, 1),
+        RadioWaveEffect 0.4s cubic-bezier(0.08, 0.82, 0.17, 1);
+      animation-fill-mode: forwards;
+      visibility: visible;
+    }
+  }
+}
+
+.#{$namespace}-radio_inline {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+@keyframes RadioWaveEffect {
+  100% {
+    transform: translate(-50%, -50%) scale(1.4);
+  }
+}
+
+@keyframes RadioFadeEffect {
+  100% {
+    opacity: 0;
+  }
+}
+/* #endregion RADIO */
