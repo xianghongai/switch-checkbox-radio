@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="../dist/main.css" />
     <style>
       [data-desc] {
-        box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
       }
 
       h1,
@@ -22,6 +22,10 @@
       article {
         margin: 10px;
         padding: 10px;
+      }
+
+      [data-desc] + [data-desc] {
+        margin-top: 20px;
       }
 
       h1 {
@@ -33,6 +37,14 @@
         color: #ccc;
         padding-right: 10px;
         padding-left: 10px;
+      }
+
+      [data-section='switch'] + [data-section='checkbox'] {
+        margin-top: 10px;
+      }
+
+      [data-section='checkbox'] + [data-section='radio'] {
+        margin-top: 10px;
       }
     </style>
   </head>
@@ -158,8 +170,8 @@
     </div>
 
     <!-- 带 JavaScript 环境示例 -->
-    <div id="app">
-      <section v-for="item in data">
+    <div id="app" data-desc="Vue.js environment">
+      <section v-for="item in data" v-bind:data-section="item.type">
         <!-- #region SWITCH -->
         <div
           v-if="item.type === type.switch"
