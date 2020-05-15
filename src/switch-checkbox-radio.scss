@@ -42,8 +42,6 @@ $switch-border-width: 1px;
   user-select: none;
 }
 
-// :checked is pseudo-class
-// [disabled] is attribute
 .#{$namespace}-switch {
   display: inline-block;
   position: relative;
